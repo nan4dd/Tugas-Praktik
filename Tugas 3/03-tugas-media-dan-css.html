@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemutar Media Kuliah Responsif</title>
+    <link rel="stylesheet" href="03-tugas-style.css">
+</head>
+<body>
+    <main class="media-page">
+        <article class="media-card media-card--featured">
+            <div class="media-card__cover">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="assets/cover-mobile.webp">
+                    <source media="(min-width: 769px)" srcset="assets/cover-desktop.webp">
+                    <img src="assets/cover-desktop.webp" alt="Sampul Pemutar Media Kuliah Responsif">
+                </picture>
+            </div>
+
+            <div class="media-card__content">
+                <p class="media-card__eyebrow">PEMROGRAMAN WEB • MODUL 03</p>
+                <h1 class="media-card__title">Pemutar Media Kuliah Responsif</h1>
+                <p class="media-card__description">
+                    Pelajari penggunaan elemen multimedia HTML5 dan penerapan CSS responsif
+                    untuk membangun komponen media yang menarik dan mudah digunakan pada
+                    platform e-learning.
+                </p>
+
+                <div class="media-card__video">
+                    <video controls preload="metadata" poster="assets/poster.webp">
+                        <source src="assets/video-kuliah.mp4" type="video/mp4">
+                        <source src="assets/video-kuliah.webm" type="video/webm">
+                        Browser Anda tidak mendukung pemutar video HTML5.
+                    </video>
+                </div>
+
+                <div class="media-card__audio">
+                    <h2 class="media-card__media-title">Audio Kuliah</h2>
+                    <audio controls preload="metadata">
+                        <source src="assets/audio-kuliah.mp3" type="audio/mpeg">
+                        Browser Anda tidak mendukung pemutar audio HTML5.
+                    </audio>
+                </div>
+
+                <div class="media-card__meta">
+                    <span>Durasi ± 4 menit</span>
+                    <span>Materi Multimedia HTML5</span>
+                </div>
+            </div>
+        </article>
+    </main>
+</body>
+</html>

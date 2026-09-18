@@ -1,0 +1,152 @@
+/* TUGAS MANDIRI 3 - MEDIA & CSS */
+
+/* Reset global menggunakan border-box */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f5f7;
+    color: #17212b;
+}
+
+/* BEM Block */
+.media-page {
+    width: min(100% - 2rem, 1100px);
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* BEM Block + Modifier */
+.media-card {
+    overflow: hidden;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(20, 35, 50, .12);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.media-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 45px rgba(20, 35, 50, .18);
+}
+
+.media-card--featured {
+    border: 2px solid #8ecfc3;
+}
+
+/* BEM Elements */
+.media-card__cover {
+    width: 100%;
+    overflow: hidden;
+}
+
+.media-card__cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.media-card__content {
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.media-card__eyebrow {
+    margin: 0 0 .5rem;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: #438f84;
+}
+
+.media-card__title {
+    margin: 0 0 .8rem;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.15;
+}
+
+.media-card__description {
+    margin: 0 0 1.5rem;
+    color: #5c6873;
+    line-height: 1.7;
+}
+
+/* Demonstrasi specificity:
+   modifier + block lebih spesifik daripada element saja */
+.media-card.media-card--featured .media-card__description {
+    color: #315f58;
+    font-weight: 500;
+}
+
+.media-card__video video {
+    display: block;
+    width: 100%;
+    max-height: 600px;
+    border-radius: 12px;
+    background: #111820;
+}
+
+.media-card__audio {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #e2e8ec;
+}
+
+.media-card__media-title {
+    margin: 0 0 .75rem;
+    font-size: 1rem;
+}
+
+.media-card__audio audio {
+    display: block;
+    width: 100%;
+}
+
+.media-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1.2rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8ec;
+    font-size: .85rem;
+    color: #697680;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .media-page {
+        width: min(100% - 1rem, 700px);
+        padding: .75rem 0;
+    }
+
+    .media-card {
+        border-radius: 14px;
+    }
+
+    .media-card__content {
+        padding: 1rem;
+    }
+
+    .media-card__meta {
+        flex-direction: column;
+        gap: .45rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .media-card__cover img {
+        aspect-ratio: 1200 / 675;
+        object-fit: cover;
+    }
+}
