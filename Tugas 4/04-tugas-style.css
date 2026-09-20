@@ -1,8 +1,404 @@
-/* Tugas Mandiri 4
-   Portal Jurnal Ilmiah Multi-Kolom
-*/
+/* =========================================
+   TUGAS MANDIRI 4
+   PORTAL JURNAL ILMIAH MULTI-KOLOM
+   Fakultas Teknik Universitas Hasanuddin
+   ========================================= */
+
+
+/* =========================================
+   1. RESET GLOBAL
+   ========================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5f7fa;
+    color: #212529;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   2. HEADER & NAVIGASI
+   Flexbox murni
+   ========================================= */
+
+.site-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-nav {
+    width: min(1400px, 100%);
+    margin: 0 auto;
+    padding: 16px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.brand {
+    color: #0d47a1;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 24px;
+}
+
+.nav-links a {
+    color: #343a40;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #0d6efd;
+}
+
+
+/* =========================================
+   3. LAYOUT UTAMA
+   CSS GRID CUSTOM
+   ========================================= */
+
+.portal-layout {
+    width: min(1400px, calc(100% - 32px));
+    margin: 32px auto;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+
+/* =========================================
+   4. SIDEBAR KIRI
+   ========================================= */
+
+.left-sidebar {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    height: fit-content;
+}
+
+.left-sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+}
+
+.left-sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.left-sidebar a {
+    color: #495057;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 6px 0;
+}
+
+.left-sidebar a:hover {
+    color: #0d6efd;
+}
+
+.sidebar-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.sidebar-section h3 {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+}
+
+.sidebar-section a {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+
+/* =========================================
+   5. KOLOM ARTIKEL
+   ========================================= */
+
+.article-section {
+    min-width: 0;
+}
+
+.section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.eyebrow {
+    margin: 0 0 4px;
+    color: #0d6efd;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.section-heading h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.article-count {
+    color: #6c757d;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   6. MICRO GRID ARTIKEL
+   repeat + auto-fit + minmax
+   ========================================= */
+
+.article-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(240px, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================================
+   7. KARTU ARTIKEL
+   Bootstrap Card + Custom CSS
+   ========================================= */
+
+.article-card {
+    height: 100%;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.article-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.article-card .badge {
+    align-self: flex-start;
+    margin-bottom: 12px;
+}
+
+.article-card .card-title {
+    font-size: 1.1rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.article-card .card-text {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.article-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    margin-bottom: 16px;
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.article-card .btn {
+    align-self: flex-start;
+}
+
+
+/* =========================================
+   8. SIDEBAR KANAN
+   ========================================= */
+
+.right-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-card {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.info-card h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.info-card p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.info-card ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.topic-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.topic-list span {
+    padding: 5px 10px;
+    background-color: #f1f3f5;
+    border-radius: 999px;
+    color: #495057;
+    font-size: 0.75rem;
+}
+
+
+/* =========================================
+   9. FOOTER
+   ========================================= */
+
+.site-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 24px;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+
+/* =========================================
+   10. TABLET
+   768px - 991px
+   Kolom kanan disembunyikan
+   ========================================= */
+
+@media (min-width: 768px) {
+
+    .portal-layout {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    .right-sidebar {
+        display: none;
+    }
+
+}
+
+
+/* =========================================
+   11. DESKTOP
+   Mulai 992px
+   ========================================= */
+
+@media (min-width: 992px) {
+
+    .portal-layout {
+        grid-template-columns:
+            200px minmax(0, 1fr) 220px;
+    }
+
+    .right-sidebar {
+        display: flex;
+    }
+
+}
+
+
+/* =========================================
+   12. MOBILE
+   ========================================= */
+
+@media (max-width: 767px) {
+
+    .main-nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .nav-links {
+        width: 100%;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .portal-layout {
+        width: min(100% - 24px, 1400px);
+        margin: 20px auto;
+        gap: 16px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .section-heading h1 {
+        font-size: 1.6rem;
+    }
+
+    .article-grid {
+        grid-template-columns:
+            repeat(auto-fit, minmax(220px, 1fr));
+    }
+
 }
