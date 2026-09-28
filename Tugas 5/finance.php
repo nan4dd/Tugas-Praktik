@@ -14,28 +14,59 @@ if (!isset($_SESSION['transactions'])) {
     $_SESSION['transactions'] = [];
 }
 
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $type = $_POST['type'] ?? '';
-    $amount = (float) ($_POST['amount'] ?? 0);
+    $csrfToken = $_POST['csrf_token'] ?? '';
 
-    $transaction = new Transaction(
-        count($_SESSION['transactions']) + 1,
-        $type,
-        $amount
-    );
-
-    if ($transaction->process($_SESSION['balance'])) {
-        $_SESSION['transactions'][] = [
-            'id' => $transaction->getId(),
-            'type' => $transaction->getType(),
-            'amount' => $transaction->getAmount(),
-        ];
-
-        $message = 'Transaksi berhasil diproses.';
+    if (
+        !is_string($csrfToken)
+        || !hash_equals($_SESSION['csrf_token'], $csrfToken)
+    ) {
+        $message = 'Token CSRF tidak valid.';
     } else {
-        $message = 'Transaksi gagal diproses.';
+        $type = $_POST['type'] ?? '';
+        $amountInput = $_POST['amount'] ?? '';
+
+        $validatedType = match ($type) {
+            'deposit' => 'deposit',
+            'withdraw' => 'withdraw',
+            default => null,
+        };
+
+        $isValidAmount = is_string($amountInput)
+            && preg_match('/^\d+(\.\d+)?$/', $amountInput)
+            && (float) $amountInput > 0;
+
+        if ($validatedType === null) {
+            $message = 'Jenis transaksi tidak valid.';
+        } elseif (!$isValidAmount) {
+            $message = 'Jumlah transaksi harus berupa angka desimal positif.';
+        } else {
+            $amount = (float) $amountInput;
+
+            $transaction = new Transaction(
+                count($_SESSION['transactions']) + 1,
+                $validatedType,
+                $amount
+            );
+
+            if ($transaction->process($_SESSION['balance'])) {
+                $_SESSION['transactions'][] = [
+                    'id' => $transaction->getId(),
+                    'type' => $transaction->getType(),
+                    'amount' => $transaction->getAmount(),
+                ];
+
+                $message = 'Transaksi berhasil diproses.';
+            } else {
+                $message = 'Saldo tidak mencukupi untuk melakukan penarikan.';
+            }
+        }
     }
 }
 ?>
@@ -61,6 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="POST">
+    <input
+        type="hidden"
+        name="csrf_token"
+        value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>"
+    >
         <label for="type">Jenis Transaksi:</label>
 
         <select name="type" id="type" required>
