@@ -83,12 +83,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Sistem Manajemen Keuangan Sederhana</h1>
 
     <p>
-        Saldo saat ini:
-        Rp <?= number_format($_SESSION['balance'], 2, ',', '.') ?>
+    Saldo saat ini:
+    Rp <?= htmlspecialchars(
+        number_format($_SESSION['balance'], 2, ',', '.'),
+        ENT_QUOTES,
+        'UTF-8'
+    ) ?>
     </p>
 
     <?php if ($message !== ''): ?>
-        <p><?= $message ?></p>
+    <p>
+        <?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?>
+    </p>
     <?php endif; ?>
 
     <form method="POST">
@@ -136,14 +142,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tbody>
             <?php foreach ($_SESSION['transactions'] as $transaction): ?>
                 <tr>
-                    <td><?= $transaction['id'] ?></td>
-                    <td><?= $transaction['type'] ?></td>
                     <td>
-                        Rp <?= number_format(
-                            $transaction['amount'],
-                            2,
-                            ',',
-                            '.'
+                        <?= htmlspecialchars(
+                            (string) $transaction['id'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars(
+                            $transaction['type'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </td>
+                    <td>
+                        Rp <?= htmlspecialchars(
+                            number_format(
+                                $transaction['amount'],
+                                2,
+                                ',',
+                                '.'
+                            ),
+                            ENT_QUOTES,
+                            'UTF-8'
                         ) ?>
                     </td>
                 </tr>
