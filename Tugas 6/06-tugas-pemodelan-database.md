@@ -170,12 +170,13 @@ Namun, masih terdapat redundansi. Contohnya:
 Untuk mencapai 2NF, tabel harus sudah memenuhi 1NF dan setiap atribut
 non-key harus bergantung sepenuhnya pada primary key.
 
-Pada tabel 1NF terdapat beberapa ketergantungan:
+Pada tabel 1NF terdapat beberapa ketergantungan data:
 
 - `NIM → Nama Mahasiswa, Program Studi`
 - `ID Buku → Judul Buku, Penerbit`
-- `ID Peminjaman → NIM, ID Buku, Tanggal Peminjaman, Tanggal Jatuh Tempo, Tanggal Pengembalian`
+- `(NIM, ID Buku, Tanggal Peminjaman) → Tanggal Jatuh Tempo, Tanggal Pengembalian`
 
+Data mahasiswa dan data buku tidak bergantung pada keseluruhan data transaksi.
 Oleh karena itu, data mahasiswa dan buku dipisahkan dari data transaksi.
 
 #### Tabel Mahasiswa
@@ -378,5 +379,67 @@ Relasi Foreign Key diterapkan untuk menjaga konsistensi data.
 
 ## 5. Relasi Antar Entitas
 
+ERD berikut menunjukkan hubungan antar tabel berdasarkan Primary Key (PK) dan
+Foreign Key (FK).
+
 ```mermaid
 erDiagram
+
+    MAHASISWA {
+        VARCHAR(15) nim PK
+        VARCHAR(100) nama_mahasiswa
+        VARCHAR(100) program_studi
+        VARCHAR(100) fakultas
+        VARCHAR(100) email
+        VARCHAR(20) no_telepon
+    }
+
+    PENERBIT {
+        INT id_penerbit PK
+        VARCHAR(100) nama_penerbit
+        VARCHAR(255) alamat
+        VARCHAR(100) email
+        VARCHAR(20) no_telepon
+    }
+
+    BUKU {
+        INT id_buku PK
+        VARCHAR(20) isbn UK
+        VARCHAR(200) judul_buku
+        YEAR tahun_terbit
+        VARCHAR(100) kategori
+        INT stok
+        INT id_penerbit FK
+    }
+
+    TRANSAKSI_PEMINJAMAN {
+        INT id_peminjaman PK
+        VARCHAR(15) nim FK
+        INT id_buku FK
+        DATE tanggal_peminjaman
+        DATE tanggal_jatuh_tempo
+        DATE tanggal_pengembalian
+        VARCHAR(20) status_peminjaman
+    }
+
+    PENERBIT ||--o{ BUKU : menerbitkan
+    MAHASISWA ||--o{ TRANSAKSI_PEMINJAMAN : melakukan
+    BUKU ||--o{ TRANSAKSI_PEMINJAMAN : dipinjam
+```
+## 6. Kesimpulan
+
+Perancangan basis data E-Library Kampus menghasilkan empat entitas utama,
+yaitu Mahasiswa, Buku, Penerbit, dan Transaksi Peminjaman. Setiap entitas
+memiliki Primary Key sebagai identitas unik, sedangkan Foreign Key digunakan
+untuk membangun hubungan antarentitas.
+
+Proses normalisasi dilakukan mulai dari UNF, 1NF, 2NF, hingga 3NF untuk
+mengurangi redundansi data dan mencegah anomali pada proses insert, update,
+dan delete. Hasil akhir berupa empat tabel yang memiliki struktur terpisah
+sesuai fungsi masing-masing.
+
+Relasi antar tabel terdiri dari hubungan satu-ke-banyak antara Penerbit dan
+Buku, Mahasiswa dan Transaksi Peminjaman, serta Buku dan Transaksi
+Peminjaman. Dengan rancangan tersebut, basis data dapat digunakan untuk
+menyimpan data koleksi buku serta riwayat peminjaman dan pengembalian secara
+terstruktur dan konsisten.
