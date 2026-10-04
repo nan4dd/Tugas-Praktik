@@ -270,6 +270,110 @@ ketergantungan transitif antar atribut non-key.
 
 ## 4. Rancangan Tabel Akhir
 
+Berdasarkan hasil normalisasi hingga bentuk Third Normal Form (3NF),
+diperoleh empat tabel utama, yaitu `mahasiswa`, `penerbit`, `buku`, dan
+`transaksi_peminjaman`.
+
+### 4.1 Tabel `mahasiswa`
+
+Tabel `mahasiswa` digunakan untuk menyimpan identitas mahasiswa yang
+menggunakan layanan E-Library.
+
+| Nama Kolom | Tipe Data | Key | Null | Keterangan |
+|---|---|---|---|---|
+| nim | VARCHAR(15) | PK | NOT NULL | Nomor Induk Mahasiswa |
+| nama_mahasiswa | VARCHAR(100) | - | NOT NULL | Nama lengkap mahasiswa |
+| program_studi | VARCHAR(100) | - | NOT NULL | Program studi mahasiswa |
+| fakultas | VARCHAR(100) | - | NOT NULL | Fakultas mahasiswa |
+| email | VARCHAR(100) | - | NOT NULL | Email mahasiswa |
+| no_telepon | VARCHAR(20) | - | NULL | Nomor telepon mahasiswa |
+
+**Primary Key:** `nim`
+
+---
+
+### 4.2 Tabel `penerbit`
+
+Tabel `penerbit` digunakan untuk menyimpan informasi penerbit buku.
+
+| Nama Kolom | Tipe Data | Key | Null | Keterangan |
+|---|---|---|---|---|
+| id_penerbit | INT | PK | NOT NULL | Identitas unik penerbit |
+| nama_penerbit | VARCHAR(100) | - | NOT NULL | Nama penerbit |
+| alamat | VARCHAR(255) | - | NOT NULL | Alamat penerbit |
+| email | VARCHAR(100) | - | NULL | Email penerbit |
+| no_telepon | VARCHAR(20) | - | NULL | Nomor telepon penerbit |
+
+**Primary Key:** `id_penerbit`
+
+---
+
+### 4.3 Tabel `buku`
+
+Tabel `buku` digunakan untuk menyimpan data koleksi buku yang tersedia
+di perpustakaan.
+
+| Nama Kolom | Tipe Data | Key | Null | Keterangan |
+|---|---|---|---|---|
+| id_buku | INT | PK | NOT NULL | Identitas unik buku |
+| isbn | VARCHAR(20) | UNIQUE | NOT NULL | Nomor ISBN buku |
+| judul_buku | VARCHAR(200) | - | NOT NULL | Judul buku |
+| tahun_terbit | YEAR | - | NOT NULL | Tahun terbit buku |
+| kategori | VARCHAR(100) | - | NOT NULL | Kategori buku |
+| stok | INT | - | NOT NULL | Jumlah stok buku |
+| id_penerbit | INT | FK | NOT NULL | Referensi ke penerbit |
+
+**Primary Key:** `id_buku`
+
+**Foreign Key:** `id_penerbit` → `penerbit.id_penerbit`
+
+---
+
+### 4.4 Tabel `transaksi_peminjaman`
+
+Tabel `transaksi_peminjaman` digunakan untuk menyimpan seluruh riwayat
+peminjaman dan pengembalian buku.
+
+| Nama Kolom | Tipe Data | Key | Null | Keterangan |
+|---|---|---|---|---|
+| id_peminjaman | INT | PK | NOT NULL | Identitas unik transaksi |
+| nim | VARCHAR(15) | FK | NOT NULL | Mahasiswa yang meminjam |
+| id_buku | INT | FK | NOT NULL | Buku yang dipinjam |
+| tanggal_peminjaman | DATE | - | NOT NULL | Tanggal peminjaman |
+| tanggal_jatuh_tempo | DATE | - | NOT NULL | Batas waktu pengembalian |
+| tanggal_pengembalian | DATE | - | NULL | Tanggal buku dikembalikan |
+| status_peminjaman | VARCHAR(20) | - | NOT NULL | Status peminjaman |
+
+**Primary Key:** `id_peminjaman`
+
+**Foreign Key:**
+- `nim` → `mahasiswa.nim`
+- `id_buku` → `buku.id_buku`
+
+---
+
+### 4.5 Ringkasan Primary Key dan Foreign Key
+
+| Tabel | Primary Key | Foreign Key |
+|---|---|---|
+| mahasiswa | `nim` | - |
+| penerbit | `id_penerbit` | - |
+| buku | `id_buku` | `id_penerbit` |
+| transaksi_peminjaman | `id_peminjaman` | `nim`, `id_buku` |
+
+### 4.6 Aturan Integritas Referensial
+
+Relasi Foreign Key diterapkan untuk menjaga konsistensi data.
+
+1. `buku.id_penerbit` harus mengacu pada `penerbit.id_penerbit`.
+2. `transaksi_peminjaman.nim` harus mengacu pada `mahasiswa.nim`.
+3. `transaksi_peminjaman.id_buku` harus mengacu pada `buku.id_buku`.
+4. Buku tidak dapat dicatat memiliki penerbit yang tidak terdaftar.
+5. Transaksi peminjaman tidak dapat dibuat untuk mahasiswa atau buku yang
+   tidak terdaftar.
+6. `tanggal_pengembalian` dapat bernilai `NULL` selama buku masih dipinjam.
+7. `stok` menyimpan jumlah eksemplar buku yang tersedia untuk dipinjam.
+
 ---
 
 ## 5. Relasi Antar Entitas
